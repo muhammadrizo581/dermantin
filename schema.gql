@@ -1,0 +1,442 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Admin {
+  email: String!
+  full_name: String!
+  id: ID!
+  is_active: Boolean!
+  is_creator: Boolean!
+  password: String!
+  phone: String!
+}
+
+type Advertisement {
+  dermantin: Dermantin!
+  discount_percent: Float!
+  end_date: DateTime!
+  id: ID!
+  start_date: DateTime!
+  status: AdvertisementStatus!
+  type: AdvertisementType!
+}
+
+enum AdvertisementStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum AdvertisementType {
+  BANNER
+  SLIDER
+}
+
+type Category {
+  dermantins: [Dermantin!]
+  id: ID!
+  logo: String
+  name: String!
+}
+
+input CreateAdminDto {
+  email: String!
+  full_name: String!
+  is_active: Boolean!
+  is_creator: Boolean!
+  password: String!
+  phone: String!
+}
+
+input CreateAdvertisementDto {
+  dermantinId: Int!
+  discount_percent: Int!
+  end_date: DateTime!
+  start_date: DateTime!
+  status: AdvertisementStatus!
+  type: AdvertisementType!
+}
+
+input CreateCategoryDto {
+  logo: String
+  name: String!
+}
+
+input CreateDermantinDto {
+  categoryId: Float!
+  class: DermantinClass!
+  name: String!
+  price: Float!
+  rating: Float!
+  store_id: Float!
+}
+
+input CreateDermantinImageDto {
+  dermantin_id: Float!
+  image_url: String!
+  is_main: Boolean!
+}
+
+input CreateOrderDto {
+  dermantinId: Int!
+  remainingPrice: Float!
+  storeId: Int!
+  totalPrice: Float!
+  userId: Int!
+}
+
+input CreatePaymentDto {
+  amount: Float!
+  method: PaymentMethod!
+  orderId: Int!
+  status: PaymentStatus!
+  userId: Int!
+}
+
+input CreateRequestDto {
+  status: RequestStatus
+  text: String!
+  userId: Float!
+}
+
+input CreateReviewDto {
+  dermantinId: Int!
+  ranking: Float!
+  userId: Int!
+}
+
+input CreateSocialDto {
+  link: String!
+  name: String!
+  storeId: Int!
+  type: SocialType!
+}
+
+input CreateStoreDto {
+  description: String!
+  logoUrl: String!
+  managerId: Int!
+  name: String!
+  ratingId: Int!
+  region: Region!
+  status: Status! = ACTIVE
+}
+
+input CreateUserDto {
+  fullname: String!
+  lang: UserLang!
+  password: String!
+  phone: String!
+  region: UserRegion!
+  role: UserRole!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Dermantin {
+  advertisements: [Advertisement!]
+  category: Category!
+  class: DermantinClass!
+  id: ID!
+  name: String!
+  price: Float!
+  rating: Float!
+}
+
+enum DermantinClass {
+  LUX
+  PREMIUM
+  STANDARD
+}
+
+type DermantinImage {
+  dermantin_id: Float!
+  id: ID!
+  image_url: String!
+  is_main: Boolean!
+}
+
+input LoginDto {
+  password: String!
+  phone: String!
+}
+
+type Mutation {
+  createAdmin(createAdminInput: CreateAdminDto!): Admin!
+  createAdvertisement(input: CreateAdvertisementDto!): Advertisement!
+  createCategory(createCategoryInput: CreateCategoryDto!): Category!
+  createDermantin(createDermantinInput: CreateDermantinDto!): Dermantin!
+  createDermantinImage(createDermantinImageInput: CreateDermantinImageDto!): DermantinImage!
+  createOrder(createOrderDto: CreateOrderDto!): Order!
+  createPayment(data: CreatePaymentDto!): Payment!
+  createRequest(data: CreateRequestDto!): Request!
+  createReview(createReviewDto: CreateReviewDto!): Review!
+  createSocial(createSocialDto: CreateSocialDto!): Social!
+  createStore(createStoreDto: CreateStoreDto!): Store!
+  createUser(input: CreateUserDto!): User!
+  deleteOrder(id: Int!): Boolean!
+  deleteRequest(id: Int!): Boolean!
+  deleteSocial(id: Int!): Boolean!
+  loginAdmin(dto: LoginDto!): String!
+  loginUser(dto: LoginDto!): String!
+  logout: String!
+  refreshToken: String!
+  registerAdmin(dto: CreateAdminDto!): String!
+  registerUser(dto: CreateUserDto!): String!
+  removeAdmin(id: ID!): Boolean!
+  removeCategory(id: ID!): Category!
+  removeDermantin(id: Int!): Boolean!
+  removeDermantinImage(id: Int!): Boolean!
+  removePayment(id: Int!): Payment!
+  removeUser(id: ID!): User!
+  updateAdmin(id: ID!, updateAdminInput: UpdateAdminDto!): Admin!
+  updateCategory(id: ID!, updateCategoryInput: UpdateCategoryDto!): Category!
+  updateDermantin(updateDermantinInput: UpdateDermantinDto!): Dermantin!
+  updateDermantinImage(updateDermantinImageInput: UpdateDermantinImageDto!): DermantinImage!
+  updateOrder(id: Int!, updateOrderDto: UpdateOrderDto!): Order!
+  updatePayment(id: String!, updatePayment: UpdatePaymentDto!): Payment!
+  updateRequest(data: UpdateRequestDto!, id: Int!): Request!
+  updateSocial(id: Int!, updateSocialDto: UpdateSocialDto!): Social!
+  updateStore(id: Int!, updateStoreDto: UpdateStoreDto!): Store!
+  updateUser(id: ID!, input: UpdateUserDto!): User!
+}
+
+type Order {
+  dermantin: Dermantin!
+  dermantinId: Int!
+  id: Int!
+  payments: [Payment!]
+  remainingPrice: Float!
+  store: Store!
+  storeId: Int!
+  totalPrice: Float!
+  user: User!
+  userId: Int!
+}
+
+type Payment {
+  amount: Float!
+  id: Int!
+  method: PaymentMethod!
+  order: Order!
+  status: PaymentStatus!
+  user: User!
+}
+
+enum PaymentMethod {
+  CARD
+  CASH
+  TRANSFER
+}
+
+enum PaymentStatus {
+  COMPLETED
+  FAILED
+  PENDING
+}
+
+type Query {
+  advertisement(id: Int!): Advertisement!
+  advertisements: [Advertisement!]!
+  findAllAdmin: [Admin!]!
+  findAllCategory: [Category!]!
+  findAllDermantin: [Dermantin!]!
+  findAllDermantinImages: [DermantinImage!]!
+  findAllUsers: [User!]!
+  findOneAdmin(id: ID!): Admin!
+  findOneCategory(id: ID!): Category!
+  findOneDermantin(id: Int!): Dermantin!
+  findOneDermantinImage(id: Int!): DermantinImage!
+  findOneUsers(id: ID!): User!
+  getAllOrders: [Order!]!
+  getAllRequests: [Request!]!
+  getAllReviews: [Review!]!
+  getAllSocials: [Social!]!
+  getAllStores: [Store!]!
+  getOrder(id: Int!): Order!
+  getRequest(id: Int!): Request!
+  getReview(id: Int!): Review!
+  getSocial(id: Int!): Social!
+  getStore(id: Int!): Store!
+  payment(id: Int!): Payment!
+  payments: [Payment!]!
+}
+
+enum Region {
+  BUKHARA
+  FERGANA
+  SAMARKAND
+  TASHKENT
+}
+
+type Request {
+  id: Int!
+  status: RequestStatus!
+  text: String!
+  user: User!
+}
+
+enum RequestStatus {
+  APPROVED
+  PENDING
+  REJECTED
+}
+
+type Review {
+  dermantin: Dermantin!
+  dermantinId: Int!
+  id: Int!
+  ranking: Float!
+  user: User!
+  userId: Int!
+}
+
+type Social {
+  id: Int!
+  link: String!
+  name: String!
+  store: Store!
+  storeId: Int!
+  type: SocialType!
+}
+
+enum SocialType {
+  FACEBOOK
+  INSTAGRAM
+  TELEGRAM
+  TWITTER
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+}
+
+type Store {
+  description: String!
+  id: Int!
+  logoUrl: String!
+  manager: User!
+  managerId: Int!
+  name: String!
+  rating: Review!
+  ratingId: Int!
+  region: Region!
+  status: Status!
+}
+
+input UpdateAdminDto {
+  email: String
+  full_name: String
+  is_active: Boolean
+  is_creator: Boolean
+  password: String
+  phone: String
+}
+
+input UpdateCategoryDto {
+  logo: String
+  name: String
+}
+
+input UpdateDermantinDto {
+  categoryId: Float
+  class: DermantinClass
+  id: Float!
+  name: String
+  price: Float
+  rating: Float
+  store_id: Float
+}
+
+input UpdateDermantinImageDto {
+  dermantin_id: Float
+  id: Int!
+  image_url: String
+  is_main: Boolean
+}
+
+input UpdateOrderDto {
+  dermantinId: Int
+  remainingPrice: Float
+  storeId: Int
+  totalPrice: Float
+  userId: Int
+}
+
+input UpdatePaymentDto {
+  amount: Float
+  id: Int!
+  method: PaymentMethod
+  orderId: Int
+  status: PaymentStatus
+  userId: Int
+}
+
+input UpdateRequestDto {
+  status: RequestStatus
+  text: String
+  userId: Float
+}
+
+input UpdateSocialDto {
+  link: String
+  name: String
+  storeId: Int
+  type: SocialType
+}
+
+input UpdateStoreDto {
+  description: String
+  logoUrl: String
+  managerId: Int
+  name: String
+  ratingId: Int
+  region: Region
+  status: Status
+}
+
+input UpdateUserDto {
+  fullname: String
+  phone: String
+}
+
+type User {
+  fullname: String!
+  id: ID!
+  is_verified: Float!
+  lang: UserLang!
+  payments: [Payment!]
+  phone: String!
+  region: UserRegion!
+  role: UserRole!
+}
+
+enum UserLang {
+  RU
+  UZ
+}
+
+enum UserRegion {
+  ANDIJON
+  BUXORO
+  FARGONA
+  JIZZAX
+  NAMANGAN
+  NAVOIY
+  QASHQADARYO
+  QORAQALPOGISTON
+  SAMARQAND
+  SIRDARYO
+  SURXONDARYO
+  TOSHKENT
+  XORAZM
+}
+
+enum UserRole {
+  MANAGER
+  USER
+}
